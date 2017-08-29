@@ -2,7 +2,7 @@
 
 echo "here in build_nimbix"
 
-set -e
+set -ex
 
 PROJECT=$1
 GIT_COMMIT=$2
@@ -10,10 +10,11 @@ GIT_BRANCH=$3
 GITHUB_TOKEN=$4
 PYTHON_VERSION=$5
 OS=$6
+GIT_URL=$7
 
-if [ "$#" -ne 6 ]
+if [ "$#" -ne 7 ]
 then
-  echo "Did not find 6 arguments" >&2
+  echo "Did not find 7 arguments" >&2
   exit 1
 fi
 
@@ -148,13 +149,13 @@ export CONDA_ROOT_PREFIX=$(conda info --root)
 if [ $PYTHON_VERSION -eq 2 ]
 then
     echo "Requested python version 2. Activating conda environment"
-    if ! conda info --envs | grep py2k
+    if ! conda info --envs | grep py2k-jit
     then
 	# create virtual env and activate it
-	conda create -n py2k python=2 -y
+	conda create -n py2k-jit python=2 -y
     fi
-    source activate py2k
-    export CONDA_ROOT_PREFIX="$HOME/miniconda/envs/py2k"
+    source activate py2k-jit
+    export CONDA_ROOT_PREFIX="$HOME/miniconda/envs/py2k-jit"
 fi
 
 echo "Conda root: $CONDA_ROOT_PREFIX"
@@ -178,14 +179,25 @@ export CMAKE_PREFIX_PATH=$CONDA_ROOT_PREFIX
 echo "Python Version:"
 python --version
 
-echo "Installing $PROJECT at branch $GIT_BRANCH and commit $GIT_COMMIT"
-rm -rf $PROJECT
-git clone https://github.com/pytorch/$PROJECT --quiet
-cd $PROJECT
-git fetch --tags https://github.com/pytorch/$PROJECT +refs/pull/*:refs/remotes/origin/pr/* --quiet
-git checkout $GIT_BRANCH
-git submodule update --init --recursive
+echo "GCC Version:"
+gcc --version
 
+cd $WORKSPACE
+
+echo "Installing ToffeeIR"
+# Has to be conda-forge, otherwise can't get protoc
+conda install -y -c conda-forge protobuf
+# ...but conda-forge's protobuf uses old C++ ABI, so we
+# have to build Toffee with old ABI too
+(cd torch/lib/ToffeeIR && env CPPFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install)
+# Test that the install worked
+python -c "import toffee"
+
+echo "Installing Caffe2"
+conda install -y -c ezyang -c conda-forge caffe2
+export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
+
+echo "Installing $PROJECT at branch $GIT_BRANCH and commit $GIT_COMMIT"
 if [ "$OS" == "OSX" ]; then
     export MACOSX_DEPLOYMENT_TARGET=10.9
     export CC=clang
@@ -193,6 +205,10 @@ if [ "$OS" == "OSX" ]; then
 fi
 pip install -r requirements.txt || true
 time python setup.py install
+
+echo "Testing Toffee"
+python test/test_models.py
+python test/model_defs/caffe2_pytorch_test_models.py
 
 echo "Testing pytorch"
 export OMP_NUM_THREADS=4

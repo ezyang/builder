@@ -53,7 +53,7 @@ if [ "$BUILDER" == "NIMBIX" ]; then
 elif [ "$BUILDER" == "LOCAL" ]; then
     stdout_fname=$(mktemp)
     bash nimbix-bootstrap.sh pytorch $COMMIT_TO_TEST $BRANCH_TO_TEST \
-	$github_token $jenkins_python_version $BUILDER_OS | tee  $stdout_fname
+	$github_token $jenkins_python_version $BUILDER_OS $GIT_URL | tee  $stdout_fname
     cat $stdout_fname | grep "ALL CHECKS PASSED"
 else
     echo "unknown BUILDER = $BUILDER , exiting"

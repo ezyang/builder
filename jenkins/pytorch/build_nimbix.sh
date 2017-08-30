@@ -189,12 +189,12 @@ echo "Installing ToffeeIR"
 #conda install -y -c conda-forge protobuf scipy
 # ...but conda-forge's protobuf uses old C++ ABI, so we
 # have to build Toffee with old ABI too
-#(cd torch/lib/ToffeeIR && env CPPFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install)
+(cd torch/lib/ToffeeIR && env CPPFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install)
 # Test that the install worked
-#python -c "import toffee"
+python -c "import toffee"
 
 echo "Installing Caffe2"
-#conda install -y -c ezyang -c conda-forge caffe2
+conda install -y -c ezyang -c conda-forge caffe2
 
 echo "Installing $PROJECT at branch $GIT_BRANCH and commit $GIT_COMMIT"
 if [ "$OS" == "OSX" ]; then
@@ -206,8 +206,8 @@ pip install -r requirements.txt || true
 time python setup.py install
 
 echo "Testing Toffee"
-#python test/test_models.py
-#(env LD_LIBRARY_PATH=/usr/local/cuda/lib64 python test/model_defs/caffe2_pytorch_test_models.py)
+python test/test_models.py
+(env LD_LIBRARY_PATH=/usr/local/cuda/lib64 python test/model_defs/caffe2_pytorch_test_models.py)
 
 echo "Testing pytorch"
 export OMP_NUM_THREADS=4

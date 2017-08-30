@@ -166,7 +166,7 @@ then
 fi
 
 # install mkl
-conda install -y mkl numpy
+conda install -y -c conda-forge mkl numpy
 
 if [ "$OS" == "LINUX" ]; then
     conda install -y magma-cuda80 -c soumith

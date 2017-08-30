@@ -194,7 +194,7 @@ conda install -y -c conda-forge protobuf scipy
 #python -c "import toffee"
 
 echo "Installing Caffe2"
-#conda install -y -c ezyang -c conda-forge caffe2
+conda install -y -c ezyang -c conda-forge caffe2
 
 echo "Installing $PROJECT at branch $GIT_BRANCH and commit $GIT_COMMIT"
 if [ "$OS" == "OSX" ]; then

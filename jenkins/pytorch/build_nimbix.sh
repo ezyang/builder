@@ -189,9 +189,9 @@ echo "Installing ToffeeIR"
 conda install -y -c conda-forge protobuf scipy
 # ...but conda-forge's protobuf uses old C++ ABI, so we
 # have to build Toffee with old ABI too
-(cd torch/lib/ToffeeIR && env CPPFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install)
+#(cd torch/lib/ToffeeIR && env CPPFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install)
 # Test that the install worked
-python -c "import toffee"
+#python -c "import toffee"
 
 echo "Installing Caffe2"
 #conda install -y -c ezyang -c conda-forge caffe2

@@ -186,7 +186,7 @@ cd $WORKSPACE
 
 echo "Installing ToffeeIR"
 # Has to be conda-forge, otherwise can't get protoc
-#conda install -y -c conda-forge protobuf scipy
+conda install -y -c conda-forge protobuf scipy
 # ...but conda-forge's protobuf uses old C++ ABI, so we
 # have to build Toffee with old ABI too
 (cd torch/lib/ToffeeIR && env CPPFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install)

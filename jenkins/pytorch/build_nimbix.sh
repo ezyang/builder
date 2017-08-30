@@ -206,8 +206,8 @@ pip install -r requirements.txt || true
 time python setup.py install
 
 echo "Testing Toffee"
-python test/test_models.py
-(env LD_LIBRARY_PATH=/usr/local/cuda/lib64 python test/model_defs/caffe2_pytorch_test_models.py)
+#python test/test_models.py
+#(env LD_LIBRARY_PATH=/usr/local/cuda/lib64 python test/model_defs/caffe2_pytorch_test_models.py)
 
 echo "Testing pytorch"
 export OMP_NUM_THREADS=4

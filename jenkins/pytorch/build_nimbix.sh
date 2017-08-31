@@ -185,11 +185,11 @@ gcc --version
 cd $WORKSPACE
 
 echo "Installing ToffeeIR"
-# Has to be conda-forge, otherwise can't get protoc
-conda install -y -c conda-forge protobuf scipy
+# ezyang provides a GCC-5 new ABI protobuf
+conda install -y -c ezyang -c conda-forge protobuf scipy
 # ...but conda-forge's protobuf uses old C++ ABI, so we
 # have to build Toffee with old ABI too
-(cd torch/lib/ToffeeIR && env CPPFLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" python setup.py install)
+(cd torch/lib/ToffeeIR && python setup.py install)
 # Test that the install worked
 python -c "import toffee"
 

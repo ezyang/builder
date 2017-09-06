@@ -149,13 +149,13 @@ export CONDA_ROOT_PREFIX=$(conda info --root)
 if [ $PYTHON_VERSION -eq 2 ]
 then
     echo "Requested python version 2. Activating conda environment"
-    if ! conda info --envs | grep py2k-jit
+    if [ ! -d "$WORKSPACE-env" ]
     then
 	# create virtual env and activate it
-	conda create -n py2k-jit python=2 -y
+	conda create -p "$WORKSPACE-env" python=2 -y
     fi
-    source activate py2k-jit
-    export CONDA_ROOT_PREFIX="$HOME/miniconda/envs/py2k-jit"
+    source activate "$WORKSPACE-env"
+    export CONDA_ROOT_PREFIX="$WORKSPACE-env"
 fi
 
 echo "Conda root: $CONDA_ROOT_PREFIX"

@@ -196,6 +196,7 @@ conda install -y -c ezyang/label/gcc5 -c conda-forge caffe2
 
 echo "Installing onnx_caffe2"
 (cd torch/lib/onnx-caffe2 && python setup.py install)
+python -c "import onnx_caffe2"
 
 echo "Installing $PROJECT at branch $GIT_BRANCH and commit $GIT_COMMIT"
 if [ "$OS" == "OSX" ]; then
@@ -206,7 +207,7 @@ fi
 pip install -r requirements.txt || true
 time python setup.py install
 
-echo "Testing Toffee"
+echo "Testing ONNX"
 python test/test_models.py
 (env LD_LIBRARY_PATH=/usr/local/cuda/lib64 python test/model_defs/caffe2_pytorch_test_models.py)
 

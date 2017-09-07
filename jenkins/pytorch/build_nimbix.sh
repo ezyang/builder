@@ -186,7 +186,7 @@ cd $WORKSPACE
 
 echo "Installing ToffeeIR"
 # ezyang provides a GCC-5 new ABI protobuf
-conda install -y -c ezyang -c conda-forge protobuf scipy
+conda install -y -c ezyang/label/gcc5 -c conda-forge protobuf scipy
 # ...but conda-forge's protobuf uses old C++ ABI, so we
 # have to build Toffee with old ABI too
 (cd torch/lib/ToffeeIR && python setup.py install)
@@ -194,7 +194,7 @@ conda install -y -c ezyang -c conda-forge protobuf scipy
 python -c "import toffee"
 
 echo "Installing Caffe2"
-conda install -y -c ezyang -c conda-forge caffe2
+conda install -y -c ezyang/label/gcc5 -c conda-forge caffe2
 
 echo "Installing $PROJECT at branch $GIT_BRANCH and commit $GIT_COMMIT"
 if [ "$OS" == "OSX" ]; then

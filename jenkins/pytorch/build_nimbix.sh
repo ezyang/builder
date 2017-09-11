@@ -199,10 +199,9 @@ if [ "$GIT_BRANCH" == "onnx" ]; then
     (cd torch/lib/onnx-caffe2 && python setup.py install)
     python -c "import onnx_caffe2"
 else
-    echo "Installing onnx and onnx-caffe2 from Anaconda"
-    conda install -y -c ezyang onnx onnx-caffe2
+    echo "Installing onnx from Anaconda"
+    conda install -y -c ezyang onnx
     python -c "import onnx"
-    python -c "import onnx_caffe2"
 fi
 
 echo "Installing $PROJECT at branch $GIT_BRANCH and commit $GIT_COMMIT"

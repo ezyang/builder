@@ -156,7 +156,7 @@ then
     source activate py2k
     export CONDA_ROOT_PREFIX="$HOME/miniconda/envs/py2k"
 else
-    source activate
+    source activate root
 fi
 
 echo "Conda root: $CONDA_ROOT_PREFIX"
